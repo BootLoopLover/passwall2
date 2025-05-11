@@ -6,7 +6,7 @@ wget https://raw.githubusercontent.com/BootLoopLover/aaa/refs/heads/main/aaa.sh 
 #passwall2 installation
 
 ```
-wget https://raw.githubusercontent.com/BootLoopLover/aaa/refs/heads/main/passwall2_installer.sh
-sh passwall2_installer.sh
+wget https://raw.githubusercontent.com/BootLoopLover/aaa/refs/heads/main/passwall2_installer
+sh passwall2_installer
 #done
 ```
