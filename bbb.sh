@@ -86,6 +86,8 @@ echo -e "${BLUE}Copying all presets into 'files/'...${NC}"
 mkdir -p files
 cp -r ../preset-openwrt/* files/ 2>/dev/null
 cp -r ../preset-immortalwrt/* files/ 2>/dev/null
+cp -r ../preset-nss/* files/ 2>/dev/null
+cp ../$preset_folder/config-nss .config
 
 # === Update Feeds ===
 echo -e "${BLUE}Initializing and installing feeds...${NC}"
