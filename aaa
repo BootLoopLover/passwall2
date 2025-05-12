@@ -1,0 +1,61 @@
+#!/bin/bash
+
+# Memperbarui daftar paket dan menginstal bash serta curl
+opkg update && opkg install bash curl
+
+# Mengunduh dan menjalankan skrip instalasi dari URL yang diberikan
+bash -c "$(curl -sko - 'https://raw.githubusercontent.com/lutfailham96/libernet/main/install.sh')"
+
+# Membuat file controller untuk LuCI
+cat <<'EOF' >/usr/lib/lua/luci/controller/libernet.lua
+module("luci.controller.libernet", package.seeall)
+function index()
+    entry({"admin", "services", "libernet"}, template("libernet"), _("Libernet"), 55).leaf = true
+end
+EOF
+
+# Membuat file view untuk LuCI
+cat <<'EOF' >/usr/lib/lua/luci/view/libernet.htm
+<%+header%>
+<div class="cbi-map">
+    <iframe id="libernet" style="width: 100%; min-height: 650px; border: none; border-radius: 2px;"></iframe>
+</div>
+<script type="text/javascript">
+    document.getElementById("libernet").src = "http://" + window.location.hostname + "/libernet";
+</script>
+<%+footer%>
+EOF
+
+# Menjalankan skrip PHP untuk mencari dan menghapus file tertentu
+php -r '
+$target_folder = "www/libernet";
+
+// Kode yang ingin dicari
+$search_code = "<?php\n    include('auth.php');\n    check_session();\n?>";
+
+// Membaca semua file dalam folder
+$files = scandir($target_folder);
+
+foreach ($files as $file) {
+    // Mengabaikan direktori "." dan ".."
+    if ($file !== "." && $file !== "..") {
+        $file_path = $target_folder . "/" . $file;
+
+        // Memeriksa apakah itu file dan bukan direktori
+        if (is_file($file_path)) {
+            // Membaca isi file
+            $file_contents = file_get_contents($file_path);
+
+            // Memeriksa apakah isi file mengandung kode yang dicari
+            if (strpos($file_contents, $search_code) !== false) {
+                // Menghapus file
+                if (unlink($file_path)) {
+                    echo "File '$file' berhasil dihapus.\n";
+                } else {
+                    echo "Gagal menghapus file '$file'.\n";
+                }
+            }
+        }
+    }
+}
+'
