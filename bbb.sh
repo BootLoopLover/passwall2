@@ -171,3 +171,4 @@ echo -e "${BLUE}Total build time: ${hours} hour(s) and ${minutes} minute(s).${NC
 cd ..
 echo -e "${BLUE}Cleaning up this script file '${script_file}'...${NC}"
 rm -f "$script_file"
+
