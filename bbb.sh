@@ -68,26 +68,52 @@ git clone $repo $distro
 # === Masuk ke Folder Source ===
 cd $distro
 
-# === Clone Semua Preset ===
-for preset in preset-openwrt preset-immortalwrt; do
-    if [ ! -d ../$preset ]; then
-        echo -e "${BLUE}Cloning $preset from GitHub...${NC}"
-        if ! git clone https://github.com/BootLoopLover/$preset.git ../$preset; then
-            echo -e "${RED}Failed to clone $preset. Check your connection or repo URL.${NC}"
-            exit 1
-        fi
-    else
-        echo -e "${GREEN}$preset already exists. Skipping clone.${NC}"
-    fi
-done
+# === Pilihan Folder Preset ===
+echo -e "${BLUE}Select which preset to use:${NC}"
+echo "1) preset-openwrt"
+echo "2) preset-immortalwrt"
+echo "3) preset-nss"
+echo "4) All"
+read -p "Enter your choice [1/2/3/4]: " preset_choice
 
-# === Gabungkan Semua Preset ke 'files/' ===
-echo -e "${BLUE}Copying all presets into 'files/'...${NC}"
+# === Clone dan Gabungkan Preset Sesuai Pilihan ===
 mkdir -p files
-cp -r ../preset-openwrt/* files/ 2>/dev/null
-cp -r ../preset-immortalwrt/* files/ 2>/dev/null
-cp -r ../preset-nss/* files/ 2>/dev/null
-cp ../$preset_folder/config-nss .config
+
+if [[ "$preset_choice" == "1" || "$preset_choice" == "4" ]]; then
+    if [ ! -d ../preset-openwrt ]; then
+        echo -e "${BLUE}Cloning preset-openwrt from GitHub...${NC}"
+        git clone https://github.com/BootLoopLover/preset-openwrt.git ../preset-openwrt || {
+            echo -e "${RED}Failed to clone preset-openwrt.${NC}"; exit 1;
+        }
+    else
+        echo -e "${GREEN}preset-openwrt already exists. Skipping clone.${NC}"
+    fi
+    cp -r ../preset-openwrt/* files/ 2>/dev/null
+fi
+
+if [[ "$preset_choice" == "2" || "$preset_choice" == "4" ]]; then
+    if [ ! -d ../preset-immortalwrt ]; then
+        echo -e "${BLUE}Cloning preset-immortalwrt from GitHub...${NC}"
+        git clone https://github.com/BootLoopLover/preset-immortalwrt.git ../preset-immortalwrt || {
+            echo -e "${RED}Failed to clone preset-immortalwrt.${NC}"; exit 1;
+        }
+    else
+        echo -e "${GREEN}preset-immortalwrt already exists. Skipping clone.${NC}"
+    fi
+    cp -r ../preset-immortalwrt/* files/ 2>/dev/null
+fi
+
+if [[ "$preset_choice" == "3" || "$preset_choice" == "4" ]]; then
+    if [ ! -d ../preset-nss ]; then
+        echo -e "${BLUE}Cloning preset-nss from GitHub...${NC}"
+        git clone https://github.com/BootLoopLover/preset-nss.git ../preset-nss || {
+            echo -e "${RED}Failed to clone preset-nss.${NC}"; exit 1;
+        }
+    else
+        echo -e "${GREEN}preset-nss already exists. Skipping clone.${NC}"
+    fi
+    cp -r ../preset-nss/* files/ 2>/dev/null
+fi
 
 # === Update Feeds ===
 echo -e "${BLUE}Initializing and installing feeds...${NC}"
@@ -145,4 +171,3 @@ echo -e "${BLUE}Total build time: ${hours} hour(s) and ${minutes} minute(s).${NC
 cd ..
 echo -e "${BLUE}Cleaning up this script file '${script_file}'...${NC}"
 rm -f "$script_file"
-
