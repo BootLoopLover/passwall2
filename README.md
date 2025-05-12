@@ -1,4 +1,4 @@
-#passwall2 installation
+#passwall2 installation via Terminal Emulator
 ---
 
 ```
