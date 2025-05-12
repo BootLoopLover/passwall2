@@ -6,6 +6,14 @@ GREEN='\033[1;32m'
 RED='\033[1;31m'
 NC='\033[0m'
 
+# === Cek path skrip untuk spasi ===
+current_path="$(pwd)"
+if [[ "$current_path" == *" "* ]]; then
+    echo -e "${RED}ERROR: Folder path contains spaces. Please move this script to a directory without spaces.${NC}"
+    echo -e "${RED}Current path: '${current_path}'${NC}"
+    exit 1
+fi
+
 # === Variabel ===
 preset_folder="preset-openwrt"
 script_file="$(basename "$0")"
@@ -171,4 +179,3 @@ echo -e "${BLUE}Total build time: ${hours} hour(s) and ${minutes} minute(s).${NC
 cd ..
 echo -e "${BLUE}Cleaning up this script file '${script_file}'...${NC}"
 rm -f "$script_file"
-
