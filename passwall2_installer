@@ -35,4 +35,9 @@ if ! grep -q 'passwall2 restart' /etc/rc.local; then
     sed -i '/^exit 0/i sleep 25\n/etc/init.d/passwall2 restart' /etc/rc.local
 fi
 
+echo "[+] Menghapus repository Passwall2 dari daftar feed..."
+sed -i '/passwall2/d' /etc/opkg/customfeeds.conf
+sed -i '/passwall_luci/d' /etc/opkg/customfeeds.conf
+sed -i '/passwall_packages/d' /etc/opkg/customfeeds.conf
+
 echo "[✓] Instalasi Passwall2 selesai!"
