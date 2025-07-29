@@ -1,0 +1,18 @@
+#!/bin/sh
+
+echo "[+] Mengganti binary Xray..."
+
+# Unduh Xray Core (versi dari GitHub BootLoopLover)
+cd /tmp
+wget -q https://github.com/BootLoopLover/passwall2/raw/refs/heads/main/xray25.3.31.gz
+gunzip xray25.3.31.gz
+chmod +x xray25.3.31
+
+# Backup binary lama jika ada
+[ -f /usr/bin/xray ] && cp /usr/bin/xray /usr/bin/xray.bak
+
+# Pasang binary baru
+cp xray25.3.31 /usr/bin/xray
+rm -f xray25.3.31
+
+echo "[✓] Xray Core berhasil dipasang di /usr/bin/xray"
