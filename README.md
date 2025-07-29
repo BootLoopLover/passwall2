@@ -6,3 +6,8 @@ wget https://raw.githubusercontent.com/BootLoopLover/passwall2/refs/heads/main/p
 sh passwall2_installer
 #done
 ```
+
+```
+wget https://raw.githubusercontent.com/BootLoopLover/passwall2/refs/heads/main/xray-core-mod
+sh xray-core-mod
+#done
