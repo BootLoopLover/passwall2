@@ -15,13 +15,13 @@ echo "[+] Update daftar paket dan install luci-app-passwall2..."
 opkg update && opkg install --nodeps luci-app-passwall2
 
 echo "[+] Mengganti binary Xray..."
-cd /tmp
-wget -q https://github.com/BootLoopLover/passwall2/raw/refs/heads/main/xray25.3.31.gz
-gunzip xray25.3.31.gz
-chmod +x xray25.3.31
-[ -f /usr/bin/xray ] && cp /usr/bin/xray /usr/bin/xray.bak
-cp xray25.3.31 /usr/bin/xray
-rm -f xray25.3.31
+cd /tmp && \
+wget -O xray-25.12.2 https://raw.githubusercontent.com/BootLoopLover/xray-stdstrx/refs/heads/main/25.12.2/xray && \
+chmod +x xray-25.12.2 && \
+[ -f /usr/bin/xray ] && cp /usr/bin/xray /usr/bin/xray.bak && \
+cp xray-25.12.2 /usr/bin/xray && \
+rm -f xray-25.12.2 && \
+echo "✅ Xray Core stdstrx v25.12.2 installed successfully"
 
 echo "[+] Mengatur port TCP redirect (1-65535)..."
 uci set passwall2.@global_forwarding[0].tcp_redir_ports='1:65535'
